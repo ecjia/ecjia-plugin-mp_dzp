@@ -77,7 +77,12 @@ class plugin_mp_dzp {
     }
 }
 
+Ecjia_PluginManager::extend('mp_dzp', function() {
+    require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_dzp.class.php';
+    return new mp_dzp();
+});
+
 RC_Plugin::register_activation_hook(__FILE__, array('plugin_mp_dzp', 'install'));
 RC_Plugin::register_deactivation_hook(__FILE__, array('plugin_mp_dzp', 'uninstall'));
-RC_Hook::add_filter('platform_factory_adapter_instance', array( 'plugin_mp_dzp', 'adapter_instance' ), 10, 2);
+// RC_Hook::add_filter('platform_factory_adapter_instance', array( 'plugin_mp_dzp', 'adapter_instance' ), 10, 2);
 // end
