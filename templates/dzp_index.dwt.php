@@ -55,9 +55,9 @@
             <h4>中奖记录</h4>
             <div>
                 {if $list}
-					<!-- {foreach from=$list item=val}-->
-					<p> {$val['nickname']} 获得奖品 ：{$val['prize_name']}</p>
-					<!-- {/foreach} -->
+                <!-- {foreach from=$list item=val}-->
+                <p> {$val.user_name} 获得奖品 ：{$val.prize_name}{if $val.prize_type eq '1' || $val.prize_type eq '3'}（{$val.prize_value}）{/if}</p>
+                <!-- {/foreach} -->
 				{else}
 			 		<p>暂无获奖记录</p>
 				{/if}
