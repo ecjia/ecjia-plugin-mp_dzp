@@ -65,14 +65,47 @@ class mp_dzp_init implements platform_interface {
     	$wechat_prize_db = RC_Loader::load_app_model('wechat_prize_model','wechat');
     	$wechat_prize_view_db = RC_Loader::load_app_model('wechat_prize_viewmodel','wechat');
 
+        // 获取GET请求数据
         $openid = trim($_GET['openid']);
         $uuid   = trim($_GET['uuid']);
 
         $account        = platform_account::make($uuid);
         $wechat_id      = $account->getAccountID();
-
+//    	$openid = trim($_GET['openid']);
+//    	$uuid = trim($_GET['uuid']);
+//    	$account = platform_account::make($uuid);
+//    	$wechat_id = $account->getAccountID();
+//    	$ext_config  = $platform_config_db->where(array('account_id' => $wechat_id,'ext_code'=>'mp_dzp'))->get_field('ext_config');
+//    	$config = array();
+//    	$config = unserialize($ext_config);
+//
+//    	foreach ($config as $k => $v) {
+//    		if ($v['name'] == 'starttime') {
+//    			$starttime = $v['value'];
+//    		}
+//    		if ($v['name'] == 'endtime') {
+//    			$endtime = $v['value'];
+//    		}
+//    		if ($v['name'] == 'prize_num') {
+//    			$prize_num = $v['value'];
+//    		}
+//    		if ($v['name'] == 'description') {
+//    			$description = $v['value'];
+//    		}
+//    		if ($v['name'] == 'list') {
+//    			$list = explode("\n",$v['value']);
+//    			foreach ($list as $k => $v){
+//    				$prize[] = explode(",",$v);
+//    			}
+//    		}
+//    	}
+//    	$starttime = strtotime($starttime);
+//    	$endtime   = strtotime($endtime);
+//    	$count = $wechat_prize_db->where('openid = "' . $openid . '"  and wechat_id = "' . $wechat_id . '"  and activity_type = "mp_dzp" and dateline between "' . $starttime . '" and "' . $endtime . '"')->count();
+//    	$prize_num = ($prize_num - $count) < 0 ? 0 : $prize_num - $count;
+//    	$list = $wechat_prize_view_db->where('p.wechat_id = "' . $wechat_id . '" and p.prize_type = 1  and p.activity_type = "mp_dzp" and dateline between "' . $starttime . '" and "' . $endtime . '"')->order('dateline desc')->limit(10)->select();
         $store_id = RC_DB::table('platform_account')->where('id', $wechat_id)->pluck('shop_id');
-        $market_activity = RC_DB::table('market_activity')->where('store_id', $store_id)->where('activity_group', 'wechat_dazhuanpan')->where('wechat_id', $wechat_id)->first();
+        $market_activity = RC_DB::table('market_activity')->where('store_id', $store_id)->where('activity_group', 'wechat_dazhuangpan')->where('wechat_id', $wechat_id)->first();
 
         $starttime = $market_activity['start_time'];
         $endtime   = $market_activity['end_time'];
@@ -82,7 +115,7 @@ class mp_dzp_init implements platform_interface {
         if ($market_activity['limit_num'] > 0) {
             $db_market_activity_lottery = RC_DB::table('market_activity_lottery');
             if ($market_activity['limit_time'] > 0) {
-                $time_limit = $time - $market_activity['limit_time']*60;
+                $time_limit = $time - $market_activity['limit_time']*60*60;
                 $db_market_activity_lottery->where('update_time', '<=', $time)->where('add_time', '>=', $time_limit);
             }
             $market_activity_lottery_info = RC_DB::table('market_activity_lottery')->where('activity_id', $market_activity['activity_id'])->where('user_id', $openid)->first();
@@ -127,12 +160,16 @@ class mp_dzp_init implements platform_interface {
             }
         }
 
-        ecjia_front::$controller->assign('form_action',RC_Uri::url('platform/plugin/show', array('handle' => 'mp_ggk/init_action', 'openid' => $openid, 'uuid' => $uuid, 'name' => 'mp_ggk')));
+        $countprize = count($prize_list);
 
-        ecjia_front::$controller->assign('prize',$prize_list);
-        ecjia_front::$controller->assign('list',$list);
-        ecjia_front::$controller->assign('prize_num',$prize_num);
-        ecjia_front::$controller->assign('description',$description);
+        ecjia_front::$controller->assign('form_action',RC_Uri::url('platform/plugin/show', array('handle' => 'mp_dzp/init_action', 'openid' => $openid, 'uuid' => $uuid)));
+
+    	ecjia_front::$controller->assign('countprize',$countprize);
+    	ecjia_front::$controller->assign('prize',$prize_list);
+    	ecjia_front::$controller->assign('list',$list);
+    	ecjia_front::$controller->assign('prize_num',$prize_num);
+    	ecjia_front::$controller->assign('description',$description);
+
         ecjia_front::$controller->assign_lang();
         ecjia_front::$controller->display($tplpath);
 	}
