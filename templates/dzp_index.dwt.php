@@ -16,7 +16,7 @@
             <div data-count="{$countprize}" class="lucky">
             	{if $prize}
 					<!-- {foreach from=$prize item=val }-->
-					 	 <span data-level="{$val.0}">{$val.0}</span>
+					 	 <span data-level="{$val.prize_name}">{$val.prize_name}</span>
 				 	<!-- {/foreach} -->
 				{/if}
             </div>
@@ -38,7 +38,7 @@
             <div>
                	{if $prize}
 					<!-- {foreach from=$prize item=val }-->
-					 	<p>{$val.0}:{$val.1}(奖品数量：{$val.2})</p>
+					 	<p>{$val.prize_name}:{$val.prize_value}(奖品数量：{$val.prize_number})</p>
 				 	<!-- {/foreach} -->
 				{/if}
             </div>
@@ -79,9 +79,10 @@
 //             return false;
 //         }
         var dot_round = 0;
-        var lucky_span = $('.lucky span');
+        var lucky_span = $(" span");
         var lucky_p = LUCKY_POS[lucky_span.length];
         lucky_span.each(function(idx, item){
+            console.log(idx);
             item = $(item);
             item.addClass('item' + lucky_p[idx] + ' z' + item.text().length);
             item.rotate(LUCKY_ROTATE[lucky_p[idx]]);

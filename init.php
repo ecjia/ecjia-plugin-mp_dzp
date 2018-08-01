@@ -163,7 +163,7 @@ class mp_dzp_init implements platform_interface {
         $countprize = count($prize_list);
 
         ecjia_front::$controller->assign('form_action',RC_Uri::url('platform/plugin/show', array('handle' => 'mp_dzp/init_action', 'openid' => $openid, 'uuid' => $uuid)));
-
+//_dump($prize_list,1);
     	ecjia_front::$controller->assign('countprize',$countprize);
     	ecjia_front::$controller->assign('prize',$prize_list);
     	ecjia_front::$controller->assign('list',$list);
