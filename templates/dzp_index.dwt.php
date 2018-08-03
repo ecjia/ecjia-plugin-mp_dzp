@@ -57,7 +57,7 @@
             <div>
                 {if $list}
                 <!-- {foreach from=$list item=val}-->
-                <p> {$val.user_name} 获得奖品 ：{$val.prize_name}{if $val.prize_type eq '1' || $val.prize_type eq '3'}（{$val.prize_value}）{/if}</p>
+                <p> {$val.user_name} 获得奖品 ：{$val.prize_name}（{$val.prize_value}）</p>
                 <!-- {/foreach} -->
 				{else}
 			 		<p>暂无获奖记录</p>
