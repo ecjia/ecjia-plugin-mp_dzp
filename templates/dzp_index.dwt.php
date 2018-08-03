@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=8,IE=9,IE=10,IE=11"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>幸运大转盘</title>
-<link rel="stylesheet" type="text/css" href="{$css_url}">
+    <link rel="stylesheet" type="text/css" href="{$css_url}">
+    <link rel="stylesheet" type="text/css" href="{$css2_url}">
 </head>
 <body>
 <div class="content-wrap">
@@ -64,6 +65,12 @@
             </div>
         </div>
     </div>
+
+    <!-- 我的奖品 -->
+    <div style="margin: 0 auto;text-align:center">
+        <a href="{$prize_url}"><img src="{$my_prize}" ></a>
+    </div>
+
 </div>
 
 <script type="text/javascript" src="{$jq_url}"></script>
