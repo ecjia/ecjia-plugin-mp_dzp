@@ -79,13 +79,13 @@
 <script type="text/javascript" src="{$Rotate_url}"></script>
 <script type="text/javascript">
     $(function(){
-//        var ISWeixin = !!navigator.userAgent.match(/MicroMessenger/i); //wp手机无法判断
-//         if(!ISWeixin){
-//             var rd_url = location.href.split('#')[0];  // remove hash
-//             var oauth_url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri='+encodeURIComponent(rd_url) + '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
-//             location.href = oauth_url;
-//             return false;
-//         }
+        var ISWeixin = !!navigator.userAgent.match(/MicroMessenger/i); //wp手机无法判断
+         if(!ISWeixin){
+             var rd_url = location.href.split('#')[0];  // remove hash
+             var oauth_url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri='+encodeURIComponent(rd_url) + '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
+             location.href = oauth_url;
+             return false;
+         }
         var dot_round = 0;
         var lucky_span = $(".lucky span");
         var lucky_p = LUCKY_POS[lucky_span.length];
