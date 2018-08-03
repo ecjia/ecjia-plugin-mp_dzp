@@ -57,7 +57,7 @@
             <div>
                 {if $list}
                 <!-- {foreach from=$list item=val}-->
-                <p> {$val.user_name} 获得奖品 ：{$val.prize_name}（{$val.prize_value}）</p>
+                <p> {{$val.user_name} 获得奖品 ：{$val.prize_name}{if $val.prize_type eq '1' || $val.prize_type eq '3'}（{$val.prize_value}）{/if}/p>
                 <!-- {/foreach} -->
 				{else}
 			 		<p>暂无获奖记录</p>
@@ -106,27 +106,9 @@
         $('.point-btn').click(function(){
             var lucky_l = POINT_LEVEL[$('.lucky').data('count')];
             $.getJSON('{$form_action}', '', function(data){
+                console.log(data);
                 //中奖
                 if(data.status == 1){
-                    var b = $(".lucky span[data-level='"+data.msg+"']").index();
-                    var a = lucky_l[b];
-                    var msg = '恭喜中了' + $(".lucky span[data-level='"+data.msg+"']").text();
-                    $(".point-btn").hide();
-                    $(".point-arrow").rotate({ 
-                        duration:3000, //转动时间 
-                        angle: 0, 
-                        animateTo:1800 + a, //转动角度 
-                        easing: $.easing.easeOutSine, 
-                        callback: function(){
-                            $(".point-btn").show();
-                            if(data.link && confirm(msg+"\r\n快去领奖吧")){
-                                location.href = data.link;
-                                return false;
-                                window.location.reload(); 
-                            }
-                        } 
-                    });
-                }else if(data.status == 0){
                     var b = $(".lucky span[data-level='"+data.msg+"']").index();
                     var a = lucky_l[b];
                     var msg = '恭喜中了' + $(".lucky span[data-level='"+data.msg+"']").text();
@@ -138,12 +120,11 @@
                         easing: $.easing.easeOutSine,
                         callback: function(){
                             $(".point-btn").show();
-                            // if(data.link && confirm(msg+"\r\n快去领奖吧")){
-                            confirm(msg+"\r\n快去领奖吧")
+                            if(data.link && confirm(msg+"\r\n快去领奖吧")){
                                 location.href = data.link;
-                                // return false;
+                                return false;
                                 window.location.reload();
-                            // }
+                            }
                         }
                     });
                 }
@@ -162,21 +143,21 @@
                     a = arrow_angle * 30;
                     var msg = $(".lucky span.item"+arrow_angle).text() ? $(".lucky span.item"+arrow_angle).text() : '没有抽中';
                     $(".point-btn").hide();
-                    $(".point-arrow").rotate({ 
+                    $(".point-arrow").rotate({
                         duration:3000, //转动时间 
-                        angle: 0, 
+                        angle: 0,
                         animateTo:1800 + a, //转动角度 
-                        easing: $.easing.easeOutSine, 
-                        callback: function(){ 
+                        easing: $.easing.easeOutSine,
+                        callback: function(){
                             alert(msg);
                             $(".point-btn").show();
-                            window.location.reload(); 
-                        } 
+                            window.location.reload();
+                        }
                     });
                 }
 
             });
-            
+
         });
         //跑马灯
         dot_timer = setInterval(function(){
