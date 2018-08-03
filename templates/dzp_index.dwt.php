@@ -67,8 +67,8 @@
     </div>
 
     <!-- 我的奖品 -->
-    <div class="content" style="margin: 0 auto;text-align:center;">
-        <a href="{$prize_url}"><img style="width: 50%" src="{$my_prize}"></a>
+    <div style="margin: 0 auto;text-align:center;width: 320px">
+        <a href="{$prize_url}"><img width="50%" src="{$my_prize}" ></a>
     </div>
     <div style="margin-bottom: 10px"></div>
 
@@ -80,12 +80,12 @@
 <script type="text/javascript">
     $(function(){
         var ISWeixin = !!navigator.userAgent.match(/MicroMessenger/i); //wp手机无法判断
-//         if(!ISWeixin){
-//             var rd_url = location.href.split('#')[0];  // remove hash
-//             var oauth_url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri='+encodeURIComponent(rd_url) + '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
-//             location.href = oauth_url;
-//             return false;
-//         }
+         if(!ISWeixin){
+             var rd_url = location.href.split('#')[0];  // remove hash
+             var oauth_url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri='+encodeURIComponent(rd_url) + '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
+             location.href = oauth_url;
+             return false;
+         }
         var dot_round = 0;
         var lucky_span = $(".lucky span");
         var lucky_p = LUCKY_POS[lucky_span.length];
