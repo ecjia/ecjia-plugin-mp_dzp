@@ -49,52 +49,48 @@ use Ecjia\App\Platform\Frameworks\Contracts\PluginPageInterface;
 
 class mp_dzp_init implements PluginPageInterface
 {
-    
-    public function action() {
-        $css_url = RC_Plugin::plugins_url('css/activity-style.css', __FILE__);
-        $css2_url = RC_Plugin::plugins_url('css/bootstrap.min.css', __FILE__);
-        $jq_url = RC_Plugin::plugins_url('js/jquery.js', __FILE__);
-    	$easing_url = RC_Plugin::plugins_url('js/jquery.easing.min.js', __FILE__);
-    	$Rotate_url = RC_Plugin::plugins_url('js/jQueryRotate.2.2.js', __FILE__);
-    	
-    	$tplpath = RC_Plugin::plugin_dir_path(__FILE__) . 'templates/dzp_index.dwt.php';
-    	RC_Loader::load_app_class('platform_account', 'platform', false);
 
-    	ecjia_front::$controller->assign('jq_url',$jq_url);
-    	ecjia_front::$controller->assign('easing_url',$easing_url);
-    	ecjia_front::$controller->assign('Rotate_url',$Rotate_url);
-        ecjia_front::$controller->assign('css_url',$css_url);
-        ecjia_front::$controller->assign('css2_url',$css2_url);
+    public function action()
+    {
+        ecjia_front::$controller->assign('jquery_js', RC_Plugin::plugins_url('js/jquery.js', __FILE__));
+        ecjia_front::$controller->assign('jquery_easing_min_js', RC_Plugin::plugins_url('js/jquery.easing.min.js', __FILE__));
+        ecjia_front::$controller->assign('jQueryRotate_js', RC_Plugin::plugins_url('js/jQueryRotate.2.2.js', __FILE__));
+        ecjia_front::$controller->assign('framework7_min_js', RC_Plugin::plugins_url('js/framework7.min.js', __FILE__));
+        
+        ecjia_front::$controller->assign('activity_style_css', RC_Plugin::plugins_url('css/activity-style.css', __FILE__));
+        ecjia_front::$controller->assign('bootstrap_min_css', RC_Plugin::plugins_url('css/bootstrap.min.css', __FILE__));
+        ecjia_front::$controller->assign('models_css', RC_Plugin::plugins_url('css/models.css', __FILE__));
 
-        $my_prize     = RC_Plugin::plugins_url('images/my_prize.png',__FILE__);
-        ecjia_front::$controller->assign('my_prize',$my_prize);
-
-
-        $platform_config_db = RC_Loader::load_app_model('platform_config_model','platform');
-    	$wechat_prize_db = RC_Loader::load_app_model('wechat_prize_model','wechat');
-    	$wechat_prize_view_db = RC_Loader::load_app_model('wechat_prize_viewmodel','wechat');
+        ecjia_front::$controller->assign('my_prize', RC_Plugin::plugins_url('images/my_prize.png', __FILE__));
 
         // 获取GET请求数据
         $openid = trim($_GET['openid']);
-        $uuid   = trim($_GET['uuid']);
+        $uuid = trim($_GET['uuid']);
+        ecjia_front::$controller->assign('form_action', RC_Uri::url('platform/plugin/show', array('handle' => 'mp_dzp/init_action', 'openid' => $openid, 'uuid' => $uuid)));
 
-        $account        = platform_account::make($uuid);
-        $wechat_id      = $account->getAccountID();
-        $prize_url = RC_Uri::url('market/mobile_prize/prize_init', array('handle' => 'mp_zjd/init', 'openid' => $openid, 'uuid' => $uuid));
-        ecjia_front::$controller->assign('prize_url',$prize_url);
+        $name = '大转盘';
+        $platform_account = with(new Ecjia\App\Platform\Frameworks\Platform\Account($uuid));
+        ecjia_front::$controller->assign('title', sprintf('%s - %s - %s', $name, $platform_account->getAccountName(), ecjia::config('shop_name')));
 
-        $store_id = RC_DB::table('platform_account')->where('id', $wechat_id)->pluck('shop_id');
+        $wechat_id = $platform_account->getAccountID();
+        $store_id = $platform_account->getStoreId();
         $market_activity = RC_DB::table('market_activity')->where('store_id', $store_id)->where('activity_group', 'wechat_dazhuangpan')->where('wechat_id', $wechat_id)->first();
 
+        $description = $market_activity['activity_desc'];
+        ecjia_front::$controller->assign('description', $description);
+
+        $prize_url = RC_Uri::url('market/mobile_prize/prize_init', array('openid' => $openid, 'uuid' => $uuid, 'activity_id' => $market_activity['activity_id']));
+        ecjia_front::$controller->assign('prize_url', $prize_url);
+
         $starttime = $market_activity['start_time'];
-        $endtime   = $market_activity['end_time'];
-        $time	   = RC_Time::gmtime();
+        $endtime = $market_activity['end_time'];
+        $time = RC_Time::gmtime();
 
         /* 判断活动有无限定次数*/
         if ($market_activity['limit_num'] > 0) {
             $db_market_activity_lottery = RC_DB::table('market_activity_lottery');
             if ($market_activity['limit_time'] > 0) {
-                $time_limit = $time - $market_activity['limit_time']*60;
+                $time_limit = $time - $market_activity['limit_time'] * 60;
                 $db_market_activity_lottery->where('update_time', '<=', $time)->where('add_time', '>=', $time_limit);
             }
             $market_activity_lottery_info = $db_market_activity_lottery->where('activity_id', $market_activity['activity_id'])->where('user_id', $openid)->first();
@@ -102,13 +98,13 @@ class mp_dzp_init implements PluginPageInterface
             $limit_count = $market_activity_lottery_info['lottery_num'];
             //限定时间已抽取的次数
             $has_used_count = $limit_count;
-            $prize_num = $market_activity['limit_num'] - $has_used_count;//剩余可抽取的次数
+            $prize_num = $market_activity['limit_num'] - $has_used_count; //剩余可抽取的次数
         } else {
             $prize_num = '无限次';
         }
-        $description = $market_activity['activity_desc'];
+        ecjia_front::$controller->assign('prize_num', $prize_num);
+        
         $prize_list = RC_DB::table('market_activity_prize')->where('activity_id', $market_activity['activity_id'])->orderBy('prize_level', 'asc')->get();
-
         if (!empty($prize_list)) {
             foreach ($prize_list as $k => $v) {
                 if ($v['prize_type'] == '1') {
@@ -117,8 +113,13 @@ class mp_dzp_init implements PluginPageInterface
                 }
             }
         }
+        ecjia_front::$controller->assign('prize', $prize_list);
+
+        $countprize = count($prize_list);
+        ecjia_front::$controller->assign('countprize', $countprize);
+
         //当前活动的奖品类型为红包和积分的奖品
-        $prize_ids = RC_DB::table('market_activity_prize')->where('activity_id', $market_activity['activity_id'])->whereIn('prize_type', array(1,2,3,6))->lists('prize_id');
+        $prize_ids = RC_DB::table('market_activity_prize')->where('activity_id', $market_activity['activity_id'])->whereIn('prize_type', array(1, 2, 3, 6))->lists('prize_id');
         $winning_list = [];
         $list = [];
         if (!empty($prize_ids)) {
@@ -139,23 +140,13 @@ class mp_dzp_init implements PluginPageInterface
                 $list[] = $row;
             }
         }
-
-        $countprize = count($prize_list);
-
-        $prize_url = RC_Uri::url('market/mobile_prize/prize_init', array('openid' => $openid, 'uuid' => $uuid, 'activity_id' => $market_activity['activity_id']));
-        ecjia_front::$controller->assign('prize_url',$prize_url);
-//dd($list);
-        ecjia_front::$controller->assign('form_action',RC_Uri::url('platform/plugin/show', array('handle' => 'mp_dzp/init_action', 'openid' => $openid, 'uuid' => $uuid)));
-//_dump($prize_list,1);
-    	ecjia_front::$controller->assign('countprize',$countprize);
-    	ecjia_front::$controller->assign('prize',$prize_list);
-    	ecjia_front::$controller->assign('list',$list);
-    	ecjia_front::$controller->assign('prize_num',$prize_num);
-    	ecjia_front::$controller->assign('description',$description);
+        ecjia_front::$controller->assign('list', $list);
 
         ecjia_front::$controller->assign_lang();
+
+        $tplpath = RC_Plugin::plugin_dir_path(__FILE__) . 'templates/dzp_index.dwt.php';
         ecjia_front::$controller->display($tplpath);
-	}
+    }
 }
 
 // end
