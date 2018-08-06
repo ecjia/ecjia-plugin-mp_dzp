@@ -82,7 +82,7 @@ class mp_dzp_init extends PluginPageController implements PluginPageInterface
 
         ecjia_front::$controller->assign('form_action', RC_Uri::url('platform/plugin/show', array('handle' => 'mp_dzp/init_action', 'openid' => $openid, 'uuid' => $uuid, 'name' => 'mp_dzp')));
 
-        $code = 'wechat_dazhuangpan';
+        $code = 'wechat_dazhuanpan';
         $platform_account = new Ecjia\App\Platform\Frameworks\Platform\Account($uuid);
 
         $wechat_id = $platform_account->getAccountID();

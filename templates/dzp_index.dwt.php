@@ -88,6 +88,17 @@
 
     <script type="text/javascript">
         $(function () {
+            $.get('{$form_action}', {
+                act: 'draw'
+            }, function (result) {
+                console.log(result);
+                if (result.state == 'error') {
+                    alert(result.message);
+                    return false;
+                }
+                if (result.state == 'success') {
+                    $("#prize").html(result.prize_name);
+                }
             var dot_round = 0;
             var lucky_span = $(".lucky span");
             var lucky_p = LUCKY_POS[lucky_span.length];
@@ -108,16 +119,19 @@
 
             $('.point-btn').click(function () {
                 var lucky_l = POINT_LEVEL[$('.lucky').data('count')];
-                $.get('{$form_action}', function (data) {
+                $.get('{$form_action}', {
+                    act: 'do',
+                }, function (data) {
                     if (data.state == 'error') {
                         alert(data.message);
                         return false;
                     }
                     //中奖
-                    if (data.status == 1) {
+                    if (data.state == 'success') {
                         var b = $(".lucky span[data-level='" + data.msg + "']").index();
                         var a = lucky_l[b];
-                        var msg = '恭喜中了' + $(".lucky span[data-level='" + data.msg + "']").text();
+                        var msg = "恭喜中了" + data.prize_name + "\r\n" +
+                            "快去领奖吧";
                         $(".point-btn").hide();
                         $(".point-arrow").rotate({
                             duration: 3000, //转动时间
@@ -126,36 +140,15 @@
                             easing: $.easing.easeOutSine,
                             callback: function () {
                                 $(".point-btn").show();
-                                alert(msg + "\r\n快去领奖吧", function() {
+                                alert(msg + "\r\n快去领奖吧", function () {
                                     location.href = data.link;
                                     return false;
                                 });
                             }
                         });
-                    } else {
-                        var a = 0;
-                        var arrow_angle;
-                        while (true) {
-                            arrow_angle = ~~(Math.random() * 12);
-                            if ($.inArray(arrow_angle * 30, lucky_l) == -1) break;
-                        }
-                        a = arrow_angle * 30;
-                        var msg = $(".lucky span.item" + arrow_angle).text() ? $(
-                            ".lucky span.item" + arrow_angle).text() : '没有抽中';
-                        $(".point-btn").hide();
-                        $(".point-arrow").rotate({
-                            duration: 3000, //转动时间 
-                            angle: 0,
-                            animateTo: 1800 + a, //转动角度 
-                            easing: $.easing.easeOutSine,
-                            callback: function () {
-                                alert(msg);
-                                $(".point-btn").show();
-                                window.location.reload();
-                            }
-                        });
                     }
                 });
+            });
 
                 function alert(text, callback) {
                     var app = new Framework7({
@@ -174,11 +167,7 @@
                     app.confirm(text, '', callbackOk, callbackCancel);
                 }
             });
-            //跑马灯
-            dot_timer = setInterval(function () {
-                dot_round = dot_round == 0 ? 15 : 0;
-                $('.dots').rotate(dot_round);
-            }, 800);
+
 
         });
 
