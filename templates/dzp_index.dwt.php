@@ -74,7 +74,7 @@
         <!-- 我的奖品 -->
         <div class="prize-btn">
             <a href="{$prize_url}">
-                <img width="50%" src="{$my_prize}">
+                <img width="50%" src="{$my_prize_png}">
             </a>
         </div>
     </div>
@@ -82,8 +82,10 @@
     <script type="text/javascript" src="{$jquery_js}"></script>
     <script type="text/javascript" src="{$jquery_easing_min_js}"></script>
     <script type="text/javascript" src="{$jQueryRotate_js}"></script>
+    <script type="text/javascript" src="{$bootstrap_min_js}"></script>
     <script type="text/javascript" src="{$framework7_min_js}"></script>
-    
+
+
     <script type="text/javascript">
         $(function () {
             var dot_round = 0;
