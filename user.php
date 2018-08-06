@@ -44,8 +44,10 @@
 //
 //  ---------------------------------------------------------------------------------
 //
-RC_Loader::load_app_class('platform_interface', 'platform', false);
-class mp_dzp_user implements platform_interface {
+
+use Ecjia\App\Platform\Frameworks\Contracts\PluginPageInterface;
+
+class mp_dzp_user implements PluginPageInterface {
     
     public function action() {
     	$css_url = RC_Plugin::plugins_url('css/bootstrap.min.css', __FILE__);
