@@ -52,21 +52,26 @@ class mp_dzp_init_action implements PluginPageInterface
 
     public function action()
     {
-        $platform_config_db = RC_Loader::load_app_model('platform_config_model', 'platform');
-        $wechat_prize_db = RC_Loader::load_app_model('wechat_prize_model', 'wechat');
-        RC_Loader::load_app_class('platform_account', 'platform', false);
+//        $platform_config_db = RC_Loader::load_app_model('platform_config_model', 'platform');
+//        $wechat_prize_db = RC_Loader::load_app_model('wechat_prize_model', 'wechat');
+//        RC_Loader::load_app_class('platform_account', 'platform', false);
 
         $openid = trim($_GET['openid']);
         $uuid = trim($_GET['uuid']);
-        $account = platform_account::make($uuid);
-        $wechat_id = $account->getAccountID();
+//        $account = platform_account::make($uuid);
 
-        $rs = array();
         // 未登录
         if (empty($openid)) {
             return ecjia_front::$controller->showmessage('请先登录', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
-        $store_id = RC_DB::table('platform_account')->where('id', $wechat_id)->pluck('shop_id');
+
+        $platform_account = new Ecjia\App\Platform\Frameworks\Platform\Account($uuid);
+        $wechat_id = $platform_account->getAccountID();
+        $store_id = $platform_account->getStoreId();
+
+        $rs = array();
+
+//        $store_id = RC_DB::table('platform_account')->where('id', $wechat_id)->pluck('shop_id');
         $market_activity = RC_DB::table('market_activity')->where('store_id', $store_id)->where('wechat_id', $wechat_id)->where('activity_group', 'wechat_dazhuangpan')->first();
         $starttime = $market_activity['start_time'];
         $endtime = $market_activity['end_time'];
