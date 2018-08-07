@@ -121,6 +121,9 @@ class mp_dzp_init extends PluginPageController implements PluginPageInterface
         $list = $MarketActivity->getActivityWinningLog()->toArray();
         ecjia_front::$controller->assign('list', $list);
 
+        $countprize = count($prize_list);
+        ecjia_front::$controller->assign('countprize', $countprize);
+
         ecjia_front::$controller->display($this->getPluginFilePath('templates/dzp_index.dwt.php'));
     }
 }
