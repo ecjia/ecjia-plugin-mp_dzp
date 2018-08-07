@@ -119,16 +119,14 @@
 
             $('.point-btn').click(function () {
                 var lucky_l = POINT_LEVEL[$('.lucky').data('count')];
+                console.log(lucky_l);
                 $.get('{$form_action}', {
                     act: 'do',
                 }, function (data) {
-                    if (data.state == 'error') {
-                        alert(data.message);
-                        return false;
-                    }
+
                     //中奖
                     if (data.state == 'success') {
-                        var b = $(".lucky span[data-level='" + data.msg + "']").index();
+                        var b = $(".lucky span[data-level='" + data.prize_name + "']").index();
                         var a = lucky_l[b];
                         var msg = "恭喜中了" + data.prize_name + "\r\n" +
                             "快去领奖吧";
@@ -144,6 +142,32 @@
                                     location.href = data.link;
                                     return false;
                                 });
+                            }
+                        });
+                    }
+
+                    if (data.state == 'error') {
+                        var a = 0;
+                        var arrow_angle;
+                        while (true){
+                            arrow_angle = ~~(Math.random() * 12);
+                            if ($.inArray(arrow_angle * 30, lucky_l) == -1) break;
+                        }
+                        a = arrow_angle * 30;
+                        var msg = $(".lucky span.item"+arrow_angle).text() ? $(".lucky span.item"+arrow_angle).text() : '没有抽中';
+                        $(".point-btn").hide();
+                        $(".point-arrow").rotate({
+                            duration:3000, //转动时间
+                            angle: 0,
+                            animateTo:1800 + a, //转动角度
+                            easing: $.easing.easeOutSine,
+                            callback: function(){
+                                alert(data.message, function() {
+                                    location.reload();
+                                    return false;
+                                });
+                                $(".point-btn").show();
+                                window.location.reload();
                             }
                         });
                     }
@@ -166,12 +190,19 @@
                     });
                     app.confirm(text, '', callbackOk, callbackCancel);
                 }
+                //跑马灯
+                dot_timer = setInterval(function () {
+                    dot_round = dot_round == 0 ? 15 : 0;
+                    $('.dots').rotate(dot_round);
+                }, 800);
             });
 
 
         });
 
         var POINT_LEVEL = {
+            1: [30],
+            2: [30, 180],
             3: [30, 150, 270],
             4: [30, 90, 210, 270],
             5: [30, 90, 150, 210, 270],
@@ -181,6 +212,8 @@
             9: [30, 90, 150, 210, 270, 330, 0, 180, 120]
         };
         var LUCKY_POS = {
+            1: [1],
+            2: [1, 3],
             3: [1, 5, 9],
             4: [1, 3, 7, 9],
             5: [1, 3, 5, 7, 9],
