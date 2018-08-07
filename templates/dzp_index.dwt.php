@@ -48,7 +48,6 @@
                         {if $val.prize_level eq '0'} 特等奖： {elseif $val.prize_level eq '1'} 一等奖： {elseif $val.prize_level eq '2'} 二等奖： {elseif $val.prize_level
                         eq '3'} 三等奖： {elseif $val.prize_level eq '4'} 四等奖： {elseif $val.prize_level eq '5'} 五等奖： {/if} {$val.prize_name}{$val.prize_value}（剩余奖品数量：{$val.prize_number}）
                     </p>                    <!-- {/foreach} -->
-                    {/if}
                     {else}
                     <p>暂无设置</p>
                     {/if}
