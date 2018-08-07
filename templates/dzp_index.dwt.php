@@ -91,7 +91,6 @@
             $.get('{$form_action}', {
                 act: 'draw'
             }, function (result) {
-                console.log(result);
                 if (result.state == 'error') {
                     alert(result.message);
                     return false;
@@ -119,7 +118,6 @@
 
             $('.point-btn').click(function () {
                 var lucky_l = POINT_LEVEL[$('.lucky').data('count')];
-                console.log(lucky_l);
                 $.get('{$form_action}', {
                     act: 'do',
                 }, function (data) {
