@@ -85,14 +85,18 @@ class mp_dzp_init_action implements PluginPageInterface
         $openid = trim($_GET['openid']);
         $uuid = trim($_GET['uuid']);
 
-
+        $code = 'wechat_dazhuanpan';
         $platform_account = new Ecjia\App\Platform\Frameworks\Platform\Account($uuid);
 
         $wechat_id = $platform_account->getAccountID();
         $store_id = $platform_account->getStoreId();
 
-        $code = 'wechat_dazhuanpan';
-        $MarketActivity = new Ecjia\App\Market\Prize\MarketActivity($code, $store_id, $wechat_id);
+        try {
+            $MarketActivity = new Ecjia\App\Market\Prize\MarketActivity($code, $store_id, $wechat_id);
+        } catch (Ecjia\App\Market\Exceptions\ActivityException $e) {
+            return ecjia_front::$controller->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+
         $starttime = $MarketActivity->getActivityStartTime();
         $endtime = $MarketActivity->getActivityEndTime();
         $time = RC_Time::gmtime();
@@ -143,7 +147,13 @@ class mp_dzp_init_action implements PluginPageInterface
         $store_id = $platform_account->getStoreId();
 
         $code = 'wechat_dazhuanpan';
-        $MarketActivity = new Ecjia\App\Market\Prize\MarketActivity($code, $store_id, $wechat_id);
+
+        try {
+            $MarketActivity = new Ecjia\App\Market\Prize\MarketActivity($code, $store_id, $wechat_id);
+        } catch (Ecjia\App\Market\Exceptions\ActivityException $e) {
+            return ecjia_front::$controller->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+        }
+
         $starttime = $MarketActivity->getActivityStartTime();
         $endtime = $MarketActivity->getActivityEndTime();
         $time = RC_Time::gmtime();
