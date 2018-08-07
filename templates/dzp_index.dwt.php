@@ -73,7 +73,7 @@
 
         <!-- 我的奖品 -->
         <div class="prize-btn">
-            <a href="{$prize_url}">
+            <a class="external" href="{$prize_url}">
                 <img width="50%" src="{$my_prize_png}">
             </a>
         </div>

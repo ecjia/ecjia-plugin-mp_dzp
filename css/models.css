@@ -1,7 +1,7 @@
 .modal-overlay,
 .preloader-indicator-overlay,
 .popup-overlay {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   width: 100%;
@@ -27,7 +27,7 @@
 
 .modal {
   width: 270px;
-  position: absolute;
+  position: fixed;
   z-index: 11000;
   left: 50%;
   margin-left: -135px;
