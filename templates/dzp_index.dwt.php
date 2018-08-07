@@ -138,10 +138,13 @@
                             easing: $.easing.easeOutSine,
                             callback: function () {
                                 $(".point-btn").show();
-                                alert(msg + "\r\n快去领奖吧", function () {
+                                confirm(msg, function() {
                                     location.href = data.link;
                                     return false;
-                                });
+                                }, function() {
+                                    location.reload();
+                                    return false;
+                                })
                             }
                         });
                     }
@@ -167,7 +170,6 @@
                                     return false;
                                 });
                                 $(".point-btn").show();
-                                window.location.reload();
                             }
                         });
                     }
@@ -177,16 +179,16 @@
                 function alert(text, callback) {
                     var app = new Framework7({
                         modalButtonOk: "确定",
-                        modalTitle: ''
+                        modalTitle: '提示'
                     });
                     app.alert(text, '', callback);
                 }
 
                 function confirm(text, callbackOk, callbackCancel) {
                     var app = new Framework7({
-                        modalButtonOk: "确定",
-                        modalTitle: '',
-                        modalButtonCancel: '取消'
+                        modalButtonOk: "去领奖",
+                        modalTitle: '中奖啦',
+                        modalButtonCancel: '稍后再领'
                     });
                     app.confirm(text, '', callbackOk, callbackCancel);
                 }
