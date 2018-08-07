@@ -69,12 +69,11 @@ class mp_dzp_init extends PluginPageController implements PluginPageInterface
 
         $this->assginPluginStyleUrl('my_prize_png', 'images/my_prize.png');
 
-        if (! ecjia_is_weixin()) {
+        if (!ecjia_is_weixin()) {
             $uuid = trim($_GET['uuid']);
             $url = with(new Ecjia\App\Wechat\Authorize\WechatAuthorize($uuid))->getAuthorizeUrl(RC_Uri::current_url());
             $this->redirect($url);
         }
-
     }
 
     public function action()
@@ -97,7 +96,7 @@ class mp_dzp_init extends PluginPageController implements PluginPageInterface
         try {
             $MarketActivity = new Ecjia\App\Market\Prize\MarketActivity($code, $store_id, $wechat_id);
         } catch (Ecjia\App\Market\Exceptions\ActivityException $e) {
-            return ecjia_front::$controller->showmessage($e->getMessage(), ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
+            return ecjia_front::$controller->showmessage($e->getMessage(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         $name = $MarketActivity->getActivityName();
