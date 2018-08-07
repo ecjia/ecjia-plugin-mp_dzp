@@ -154,7 +154,7 @@ class mp_dzp_init_action implements PluginPageInterface
         }
         //判断大转盘时间时间是否结束
         if ($time > $endtime) {
-            return ecjia_front::$controller->showmessage('刮刮卡活动已经结束', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+            return ecjia_front::$controller->showmessage('大转盘活动已经结束', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
         }
 
         //获取用户剩余抽奖次数
