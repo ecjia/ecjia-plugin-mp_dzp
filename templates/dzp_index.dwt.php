@@ -35,7 +35,7 @@
             <div class="info-box-inner">
                 <h4>剩余次数</h4>
                 <div>您当前还剩余
-                    <span style="font-size: 16px;"> {if $prize_num lt 0} 0 {else} {$prize_num} {/if} </span>次抽奖机会</div>
+                    <span style="font-size: 16px;"> {$prize_num} </span>次抽奖机会</div>
             </div>
         </div>
         <div class="info-box">
@@ -98,9 +98,6 @@
                 if (result.state == 'error') {
                     alert(result.message);
                     return false;
-                }
-                if (result.state == 'success') {
-                    $("#prize").html(result.prize_name);
                 }
             var dot_round = 0;
             var lucky_span = $(".lucky span");
