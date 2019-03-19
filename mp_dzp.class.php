@@ -117,8 +117,8 @@ class mp_dzp extends PlatformAbstract
         } else {
 
             $articles = [
-                'Title'         => '大转盘',
-                'Description'   => '快来参与活动吧~~',
+                'Title'         => __('大转盘', 'mp_dzp'),
+                'Description'   => __('快来参与活动吧~~', 'mp_dzp'),
                 'Url'           => RC_Uri::url('platform/plugin/show', array('handle' => 'mp_dzp/init', 'openid' => $openid, 'uuid' => $uuid)),
                 'PicUrl'        => RC_Plugin::plugin_dir_url(__FILE__) . '/images/wechat_thumb_pic.jpg',
             ];

@@ -33,43 +33,43 @@
         </div>
         <div class="info-box">
             <div class="info-box-inner">
-                <h4>剩余次数</h4>
-                <div>您当前还剩余
-                    <span style="font-size: 16px;"> {$prize_num} </span>次抽奖机会</div>
+                <h4>{t domain="mp_dzp"}剩余次数{/t}</h4>
+                <div>{t domain="mp_dzp"}您当前还剩余{/t}
+                    <span style="font-size: 16px;"> {$prize_num} </span>{t domain="mp_dzp"}次抽奖机会{/t}</div>
             </div>
         </div>
         <div class="info-box">
             <div class="info-box-inner">
-                <h4>奖项设置</h4>
+                <h4>{t domain="mp_dzp"}奖项设置{/t}</h4>
                 <div>
                     {if $prize}
                     <!-- {foreach from=$prize item=val }-->
                     <p>
-                        {if $val.prize_level eq '0'} 特等奖： {elseif $val.prize_level eq '1'} 一等奖： {elseif $val.prize_level eq '2'} 二等奖： {elseif $val.prize_level
-                        eq '3'} 三等奖： {elseif $val.prize_level eq '4'} 四等奖： {elseif $val.prize_level eq '5'} 五等奖： {/if} {$val.prize_name}{if $val.prize_type eq 2}（{$val.prize_value}）{/if}（剩余奖品数量：{$val.prize_number}）
+                        {if $val.prize_level eq '0'} {t domain="mp_dzp"}特等奖：{/t} {elseif $val.prize_level eq '1'} {t domain="mp_dzp"}一等奖：{/t} {elseif $val.prize_level eq '2'} {t domain="mp_dzp"}二等奖：{/t} {elseif $val.prize_level
+                        eq '3'} {t domain="mp_dzp"}三等奖：{/t} {elseif $val.prize_level eq '4'} {t domain="mp_dzp"}四等奖：{/t} {elseif $val.prize_level eq '5'} {t domain="mp_dzp"}五等奖：{/t} {/if} {$val.prize_name}{if $val.prize_type eq 2}（{$val.prize_value}）{/if}{t domain="mp_dzp" 1={$val.prize_number}}（剩余奖品数量：%1）{/t}
                     </p>                    <!-- {/foreach} -->
                     {else}
-                    <p>暂无设置</p>
+                    <p>{t domain="mp_dzp"}暂无设置{/t}</p>
                     {/if}
                 </div>
             </div>
         </div>
         <div class="info-box">
             <div class="info-box-inner">
-                <h4>活动规则</h4>
+                <h4>{t domain="mp_dzp"}活动规则{/t}</h4>
                 <div>{$description}</div>
             </div>
         </div>
         <div class="info-box">
             <div class="info-box-inner">
-                <h4>中奖记录</h4>
+                <h4>{t domain="mp_dzp"}中奖记录{/t}</h4>
                 <div>
                     {if $list}
                     <!-- {foreach from=$list item=val}-->
-                    <p> {$val.user_name} 获得奖品 ：{$val.prize_name} {if $val.prize_type eq 2}（{$val.prize_value}）{/if}</p>
+                    <p> {$val.user_name} {t domain="mp_dzp"}获得奖品 ：{/t}{$val.prize_name} {if $val.prize_type eq 2}（{$val.prize_value}）{/if}</p>
                     <!-- {/foreach} -->
                     {else}
-                    <p>暂无获奖记录</p>
+                    <p>{t domain="mp_dzp"}暂无获奖记录{/t}</p>
                     {/if}
                 </div>
             </div>
