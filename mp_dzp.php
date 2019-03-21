@@ -74,6 +74,7 @@ class plugin_mp_dzp {
 }
 
 Ecjia_PluginManager::extend('mp_dzp', function() {
+    RC_Locale::loadPluginTextdomain('mp_dzp');
     require_once RC_Plugin::plugin_dir_path(__FILE__) . 'mp_dzp.class.php';
     return new mp_dzp();
 });
