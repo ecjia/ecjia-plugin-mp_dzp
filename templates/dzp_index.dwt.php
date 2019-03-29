@@ -92,6 +92,8 @@
 
     <script type="text/javascript">
         $(function () {
+       	 	var js_lang = '{$js_lang}';
+       	 
             $.get('{$form_action}', {
                 act: 'draw'
             }, function (result) {
@@ -107,7 +109,7 @@
                 item.addClass('item' + lucky_p[idx] + ' z' + item.text().length);
                 item.rotate(LUCKY_ROTATE[lucky_p[idx]]);
             });
-            var NOL_TXTs = ['再接再厉', '不要灰心', '没有抽中', '谢谢参与', '祝您好运', '不要灰心', '就差一点'];
+            var NOL_TXTs = [js_lang.reconnect, js_lang.no_heart, js_lang.no_pumping, js_lang.thank_you, js_lang.good_luck, js_lang.give_up, js_lang.just_little];
             for (var i = 1; i <= 12; i++) {
                 if ($('.lucky .item' + i).length == 0) {
                     var item = $('<span class="item' + i + ' nol z4">' + NOL_TXTs[i > 6 ? 12 - i : i] +
@@ -127,8 +129,8 @@
                     if (data.state == 'success') {
                         var b = $(".lucky span[data-level='" + data.prize_name + "']").index();
                         var a = lucky_l[b];
-                        var msg = "恭喜中了" + data.prize_name + "\r\n" +
-                            "快去领奖吧";
+                        var msg = js_lang.congratulations + data.prize_name + "\r\n" +
+                            js_lang.get_award;
                         $(".point-btn").hide();
                         $(".point-arrow").rotate({
                             duration: 3000, //转动时间
@@ -156,7 +158,7 @@
                             if ($.inArray(arrow_angle * 30, lucky_l) == -1) break;
                         }
                         a = arrow_angle * 30;
-                        var msg = $(".lucky span.item"+arrow_angle).text() ? $(".lucky span.item"+arrow_angle).text() : '没有抽中';
+                        var msg = $(".lucky span.item"+arrow_angle).text() ? $(".lucky span.item"+arrow_angle).text() : js_lang.no_pumping;
                         $(".point-btn").hide();
                         $(".point-arrow").rotate({
                             duration:3000, //转动时间
@@ -177,17 +179,17 @@
 
                 function alert(text, callback) {
                     var app = new Framework7({
-                        modalButtonOk: "确定",
-                        modalTitle: '提示'
+                        modalButtonOk: js_lang.ok,
+                        modalTitle: js_lang.tip
                     });
                     app.alert(text, '', callback);
                 }
 
                 function confirm(text, callbackOk, callbackCancel) {
                     var app = new Framework7({
-                        modalButtonOk: "去领奖",
-                        modalTitle: '中奖啦',
-                        modalButtonCancel: '稍后再领'
+                        modalButtonOk: js_lang.go_to_award,
+                        modalTitle: js_lang.winning,
+                        modalButtonCancel: js_lang.recollect_later
                     });
                     app.confirm(text, '', callbackOk, callbackCancel);
                 }

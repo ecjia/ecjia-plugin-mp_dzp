@@ -128,6 +128,25 @@ class mp_dzp_init extends PluginPageController implements PluginPageInterface
         $countprize = count($prize_list);
         ecjia_front::$controller->assign('countprize', $countprize);
 
+        $js_lang_array = array(
+        		'reconnect'		=>	__('test再接再厉', 'mp_dzp'),
+        		'no_heart'		=>	__('test不要灰心', 'mp_dzp'),
+        		'no_pumping'	=> __('没有抽中', 'mp_dzp'),
+        		'thank_you'		=> __('谢谢参与', 'mp_dzp'),
+        		'good_luck'		=> __('祝您好运', 'mp_dzp'),
+        		'give_up'		=> __('不要放弃', 'mp_dzp'),
+        		'just_little'	=> __('就差一点', 'mp_dzp'),
+        		'congratulations'	=> __('恭喜中了', 'mp_dzp'),
+        		'get_award'			=> __('快去领奖吧', 'mp_dzp'),
+        		'no_pumping'		=> __('没有抽中', 'mp_dzp'),
+        		'ok'				=> __('test确定', 'mp_dzp'),
+        		'tip'				=> __('test提示', 'mp_dzp'),
+        		'go_to_award'		=> __('去领奖', 'mp_dzp'),
+        		'winning'			=> __('中奖啦', 'mp_dzp'),
+        		'recollect_later'	=> __('稍后再领', 'mp_dzp'),
+        );
+        ecjia_front::$controller->assign('js_lang', $js_lang_array);
+        
         ecjia_front::$controller->display($this->getPluginFilePath('templates/dzp_index.dwt.php'));
     }
 }
