@@ -145,7 +145,7 @@ class mp_dzp_init extends PluginPageController implements PluginPageInterface
         		'winning'			=> __('中奖啦', 'mp_dzp'),
         		'recollect_later'	=> __('稍后再领', 'mp_dzp'),
         );
-        ecjia_front::$controller->assign('js_lang', $js_lang_array);
+        ecjia_front::$controller->assign('js_lang', json_encode($js_lang_array));
         
         ecjia_front::$controller->display($this->getPluginFilePath('templates/dzp_index.dwt.php'));
     }
